@@ -41,7 +41,7 @@ class ENoiseBox(TwoStageDetector):
                       img,
                       img_metas,
                       gt_bboxes,
-                      gt_true_bboxes,
+                    #   gt_true_bboxes,  # Removido por Filipe
                       gt_labels,
                       gt_bboxes_ignore=None,
                       gt_masks=None,
@@ -65,7 +65,7 @@ class ENoiseBox(TwoStageDetector):
                                                                                                                  generate_proposals,
                                                                                                                  proposals_valid_list,
                                                                                                                  gt_bboxes,
-                                                                                                                 gt_true_bboxes,
+                                                                                                                #  gt_true_bboxes,
                                                                                                                  gt_labels,
                                                                                                                  label_weights,stage_mode='ori')
                     for key, value in loss_distill.items():
@@ -87,7 +87,7 @@ class ENoiseBox(TwoStageDetector):
                                                                                                                      generate_proposals,
                                                                                                                      proposals_valid_list,
                                                                                                                      pseudo_boxes,
-                                                                                                                     gt_true_bboxes,
+                                                                                                                    #  gt_true_bboxes,
                                                                                                                      gt_labels,
                                                                                                                      label_weights,stage_mode='re')
                         for key, value in loss_distill.items():
@@ -100,7 +100,8 @@ class ENoiseBox(TwoStageDetector):
                                                                    generate_proposals,
                                                                    proposals_valid_list,
                                                                    neg_proposal_list, neg_weight_list,
-                                                                   gt_bboxes, gt_true_bboxes, gt_labels,
+                                                                   #gt_bboxes, gt_true_bboxes, gt_labels,
+                                                                   gt_bboxes, gt_labels,
                                                                    cascade_weight,
                                                                    gt_bboxes_ignore, gt_masks, others=None,
                                                                    **kwargs)
