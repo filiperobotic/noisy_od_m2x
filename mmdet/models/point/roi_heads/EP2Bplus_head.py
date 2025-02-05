@@ -414,9 +414,10 @@ class EP2BplusHead(StandardRoIHead):
         """Run forward function and calculate loss for box head in training."""
         rois = bbox2roi([res.bboxes for res in sampling_results])
         bbox_results = self._bbox_forward1(x, rois, )
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         bbox_targets = self.bbox_head1.get_targets(sampling_results, gt_bboxes,
-                                                   gt_labels, ann_weight, self.train_cfg)  ## add by fei
+                                                #    gt_labels, ann_weight, self.train_cfg)  ## add by fei
+                                                gt_labels, self.train_cfg)  ##  [FILIPE][Removi ann_weight]
         loss_bbox = self.bbox_head1.loss(bbox_results['cls_score'],
                                          bbox_results['bbox_pred'], rois,
                                          *bbox_targets)
