@@ -907,6 +907,12 @@ class EP2BplusHead(StandardRoIHead):
         else:
             bbox_pred = None
         import pdb; pdb.set_trace()
+        #[FILIPE UPDATE]
+        #Ajustando bboxes e scores antes de serem enviados para bbox_head
+        cls_score = cls_score.squeeze(0) if cls_score.dim() == 3 else cls_score
+        bboxes = bboxes.squeeze(0) if bboxes.dim() == 3 else bboxes
+
+
         return self.bbox_head1.get_bboxes(
             rois,
             cls_score,
