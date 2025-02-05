@@ -278,7 +278,8 @@ lr_config = dict(
 
 # Runner type
 # runner = dict(type='IterBasedRunner', max_iters=18000)
-runner = dict(type='EpochBasedRunner', max_epochs=12)
+#runner = dict(type='EpochBasedRunner', max_epochs=12)
+runner = dict(type='EpochBasedRunner', max_epochs=1)
 
 # checkpoint_config = dict(interval=3000)
 # evaluation = dict(interval=3000, metric='mAP')
