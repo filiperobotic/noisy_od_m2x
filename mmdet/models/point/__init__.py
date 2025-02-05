@@ -2,8 +2,8 @@
 # from .P2BNet import P2BNet
 # from .NoiseBox import NoiseBox
 # from .EP2BNet import EP2BNet
-from .ENoiseBox import ENoiseBox
-from .ENoiseBox_retrain import ENoiseBoxRetrain
+from detectors.ENoiseBox import ENoiseBox
+from detectors.ENoiseBox_retrain import ENoiseBoxRetrain
 
 # from .P2Seg import P2Seg
 
