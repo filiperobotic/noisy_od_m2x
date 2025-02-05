@@ -168,7 +168,7 @@ class BBoxHead(BaseModule):
         bbox_weights = pos_bboxes.new_zeros(num_samples, 4)
         if num_pos > 0:
             labels[:num_pos] = pos_gt_labels
-            print("DEBUG - cfg:", cfg) 
+            # print("DEBUG - cfg:", cfg) 
             pos_weight = 1.0 if cfg.pos_weight <= 0 else cfg.pos_weight
             label_weights[:num_pos] = pos_weight
             if not self.reg_decoded_bbox:
