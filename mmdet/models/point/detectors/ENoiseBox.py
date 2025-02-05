@@ -41,15 +41,16 @@ class ENoiseBox(TwoStageDetector):
                       img,
                       img_metas,
                       gt_bboxes,
-                      gt_true_bboxes,  # Removido por Filipe
+                      
                       gt_labels,
+                      gt_true_bboxes=None,  # Removido por Filipe
                       gt_bboxes_ignore=None,
                       gt_masks=None,
                       proposals=None,
                       **kwargs):
         
         # Garantindo que gt_bboxes sempre tenha um valor válido
-        gt_bboxes = gt_bboxes if gt_bboxes is not None else []  #Adicionado por Filipe. A base nao tem gt_true_boxes, e nao faz sentido ter 
+        gt_true_bboxes = gt_bboxes if gt_bboxes is not None else []  #Adicionado por Filipe. A base nao tem gt_true_boxes, e nao faz sentido ter 
         x = self.extract_feat(img)
         fine_proposal_cfg = self.train_cfg.get('fine_proposal', self.test_cfg.rpn)
         losses = dict()
