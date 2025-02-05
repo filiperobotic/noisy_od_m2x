@@ -910,7 +910,7 @@ class EP2BplusHead(StandardRoIHead):
         #[FILIPE UPDATE]
         #Ajustando bboxes e scores antes de serem enviados para bbox_head
         cls_score = cls_score.squeeze(0) if cls_score.dim() == 3 else cls_score
-        bboxes = bboxes.squeeze(0) if bboxes.dim() == 3 else bboxes
+        bbox_pred = bbox_pred.squeeze(0) if bbox_pred.dim() == 3 else bbox_pred
 
 
         return self.bbox_head1.get_bboxes(
