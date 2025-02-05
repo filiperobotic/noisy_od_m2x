@@ -36,7 +36,7 @@ class EP2BplusHead(StandardRoIHead):
 
         self.featmap_stride = bbox_roi_extractor.featmap_strides
         self.with_atten = with_atten
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         if bbox_head1 is not None:
             self.bbox_head1 = build_head(bbox_head1)
         # self.Test_P2B_iou = Test_P2B_iou()
@@ -413,7 +413,7 @@ class EP2BplusHead(StandardRoIHead):
         """Run forward function and calculate loss for box head in training."""
         rois = bbox2roi([res.bboxes for res in sampling_results])
         bbox_results = self._bbox_forward1(x, rois, )
-
+        import pdb;pdb.set_trace()
         bbox_targets = self.bbox_head1.get_targets(sampling_results, gt_bboxes,
                                                    gt_labels, ann_weight, self.train_cfg)  ## add by fei
         loss_bbox = self.bbox_head1.loss(bbox_results['cls_score'],
