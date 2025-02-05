@@ -172,7 +172,8 @@ class MILLoss(nn.Module):
         acc = accuracy(prob[..., 0], labels)
 
         label_weights = (valid.sum(dim=1) > 0).float()
-        labels = _expand_onehot_labels(labels, None, C)[0].float()
+        # labels = _expand_onehot_labels(labels, None, C)[0].float()
+        labels = _expand_onehot_labels(labels, None, C, ignore_index=-1)[0].float()
         num_sample = max(torch.sum(label_weights.sum(dim=-1) > 0).float().item(), 1.)
 
         if prob.shape[-1] == 1:
