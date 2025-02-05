@@ -6,7 +6,7 @@ _base_ = [
 ]
 
 custom_imports = dict(
-    imports=['mmdet.models.point.detectors.ENoiseBox'],  # Caminho correto para o módulo
+    imports=['../../mmdet.models.point.detectors.ENoiseBox'],  # Caminho correto para o módulo
     allow_failed_imports=False
 )
 
