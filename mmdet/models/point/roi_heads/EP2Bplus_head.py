@@ -36,6 +36,7 @@ class EP2BplusHead(StandardRoIHead):
 
         self.featmap_stride = bbox_roi_extractor.featmap_strides
         self.with_atten = with_atten
+        import pdb; pdb.set_trace()
         if bbox_head1 is not None:
             self.bbox_head1 = build_head(bbox_head1)
         # self.Test_P2B_iou = Test_P2B_iou()
