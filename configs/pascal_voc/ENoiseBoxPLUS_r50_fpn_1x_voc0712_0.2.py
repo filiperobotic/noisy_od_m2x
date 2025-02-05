@@ -210,8 +210,8 @@ img_norm_cfg = dict(
     mean=[103.530, 116.280, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    # dict(type='LoadAnnotations', with_bbox=True),
-    dict(type='LoadAnnotations', with_bbox=True, with_true_bboxes=True),
+    dict(type='LoadAnnotations', with_bbox=True),
+    # dict(type='LoadAnnotations', with_bbox=True, with_true_bboxes=True),
     dict(
         type='Resize',
         img_scale=[(1333, 480), (1333, 512), (1333, 544), (1333, 576),
@@ -276,7 +276,12 @@ lr_config = dict(
     step=[12000, 16000])
 
 # Runner type
-runner = dict(type='IterBasedRunner', max_iters=18000)
+# runner = dict(type='IterBasedRunner', max_iters=18000)
+runner = dict(type='EpochBasedRunner', max_epochs=12)
 
-checkpoint_config = dict(interval=3000)
-evaluation = dict(interval=3000, metric='mAP')
+# checkpoint_config = dict(interval=3000)
+# evaluation = dict(interval=3000, metric='mAP')
+evaluation = dict(interval=3, metric='mAP')
+
+
+find_unused_parameters = True
