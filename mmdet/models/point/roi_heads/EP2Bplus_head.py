@@ -930,6 +930,13 @@ class EP2BplusHead(StandardRoIHead):
             print("DEBUG - Removendo dimensão extra de rois")
             rois = rois.squeeze(0)
 
+         #Corrige max_shape antes de chamar decode()
+        if isinstance(img_shapes, tuple) and len(img_shapes) == 1:
+            img_shapes = img_shapes[0]  # Remove a tupla extra
+
+        # if len(img_shapes) == 3:  # Se houver 3 valores, descarta o canal da imagem
+        #     img_shapes = img_shapes[:2]
+
 
         return self.bbox_head1.get_bboxes(
             rois,
