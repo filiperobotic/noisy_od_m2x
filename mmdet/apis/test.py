@@ -23,6 +23,7 @@ def single_gpu_test(model,
     results = []
     dataset = data_loader.dataset
     PALETTE = getattr(dataset, 'PALETTE', None)
+    import pdb; pdb.set_trace()
     prog_bar = mmcv.ProgressBar(len(dataset))
     for i, data in enumerate(data_loader):
         with torch.no_grad():
