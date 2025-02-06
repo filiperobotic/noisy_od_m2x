@@ -931,13 +931,13 @@ class EP2BplusHead(StandardRoIHead):
             rois = rois.squeeze(0)
 
          #Se scale_factor estiver em uma tupla ou for um array, converte para tensor
-        if isinstance(scale_factor, tuple) and len(scale_factor) == 1:
-            scale_factor = scale_factor[0]  # Remove a tupla extra
+        if isinstance(scale_factors, tuple) and len(scale_factors) == 1:
+            scale_factors = scale_factors[0]  # Remove a tupla extra
 
-        if isinstance(scale_factor, np.ndarray) or isinstance(scale_factor, list):
-            scale_factor = torch.tensor(scale_factor, device=bbox_pred.device)
+        if isinstance(scale_factors, np.ndarray) or isinstance(scale_factors, list):
+            scale_factors = torch.tensor(scale_factors, device=bbox_pred.device)
 
-        print("DEBUG - scale_factor corrigido:", scale_factor)
+        print("DEBUG - scale_factor corrigido:", scale_factors)
 
          #Corrige max_shape antes de chamar decode()
         if isinstance(img_shapes, tuple) and len(img_shapes) == 1:
