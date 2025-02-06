@@ -306,13 +306,13 @@ optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 
 # learning policy
-# lr_config = dict(
-#     policy='step',
-#     warmup='linear',
-#     warmup_iters=100,
-#     warmup_ratio=0.001,
-#     step=[12000, 16000])
-lr_config = dict(policy='step', step=[3])
+lr_config = dict(
+    policy='step',
+    warmup='linear',
+    warmup_iters=100,
+    warmup_ratio=0.001,
+    step=[12000, 16000])
+# lr_config = dict(policy='step', step=[3])
 
 # Runner type
 # runner = dict(type='IterBasedRunner', max_iters=18000)
