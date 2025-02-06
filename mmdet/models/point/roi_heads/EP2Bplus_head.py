@@ -923,6 +923,11 @@ class EP2BplusHead(StandardRoIHead):
             print("DEBUG - Corrigindo bbox_pred para corresponder ao esperado")
             bbox_pred = torch.cat([bbox_pred, torch.zeros((bbox_pred.shape[0], 4), device=bbox_pred.device)], dim=1)
 
+        # [FILIPE UPDATE]
+        min_size = min(rois.shape[0], bbox_pred.shape[0])
+        rois = rois[:min_size]
+        bbox_pred = bbox_pred[:min_size]
+
 
         return self.bbox_head1.get_bboxes(
             rois,
