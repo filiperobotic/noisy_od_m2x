@@ -241,18 +241,48 @@ test_pipeline = [
             dict(type='Collect', keys=['img']),
         ])
 ]
+# data = dict(
+#     samples_per_gpu=2,
+#     workers_per_gpu=2,
+#     train=dict(
+#         type=dataset_type,
+#         ann_file=[
+#             data_root + 'VOC2007/ImageSets/Main/trainval.txt',
+#             # data_root + 'VOC2012/ImageSets/Main/trainval.txt'
+#         ],
+#         #img_prefix=[data_root + 'VOC2007/', data_root + 'VOC2012/'],
+#         img_prefix=[data_root + 'VOC2007/'],
+#         pipeline=train_pipeline),
+#     val=dict(
+#         type=dataset_type,
+#         ann_file=data_root + 'VOC2007/ImageSets/Main/test.txt',
+#         img_prefix=data_root + 'VOC2007/',
+#         pipeline=test_pipeline),
+#     test=dict(
+#         type=dataset_type,
+#         ann_file=data_root + 'VOC2007/ImageSets/Main/test.txt',
+#         img_prefix=data_root + 'VOC2007/',
+#         pipeline=test_pipeline))
+
+
+
+# dataset settings
+
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
     train=dict(
-        type=dataset_type,
-        ann_file=[
-            data_root + 'VOC2007/ImageSets/Main/trainval.txt',
-            # data_root + 'VOC2012/ImageSets/Main/trainval.txt'
-        ],
-        #img_prefix=[data_root + 'VOC2007/', data_root + 'VOC2012/'],
-        img_prefix=[data_root + 'VOC2007/'],
-        pipeline=train_pipeline),
+        type='RepeatDataset',
+        times=1,
+        dataset=dict(
+            type=dataset_type,
+            ann_file=[
+                data_root + 'VOC2007/ImageSets/Main/trainval.txt',
+                # data_root + 'VOC2012/ImageSets/Main/trainval.txt'
+            ],
+            #img_prefix=[data_root + 'VOC2007/', data_root + 'VOC2012/'],
+            img_prefix=[data_root + 'VOC2007/'],
+            pipeline=train_pipeline)),
     val=dict(
         type=dataset_type,
         ann_file=data_root + 'VOC2007/ImageSets/Main/test.txt',
@@ -263,6 +293,9 @@ data = dict(
         ann_file=data_root + 'VOC2007/ImageSets/Main/test.txt',
         img_prefix=data_root + 'VOC2007/',
         pipeline=test_pipeline))
+evaluation = dict(interval=1, metric='mAP')
+
+
 
 # optimizer
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
@@ -284,7 +317,7 @@ runner = dict(type='EpochBasedRunner', max_epochs=1)
 # checkpoint_config = dict(interval=3000)
 # evaluation = dict(interval=3000, metric='mAP')
 #evaluation = dict(interval=3, metric='mAP')
-evaluation = dict(interval=1, metric='mAP')
+# evaluation = dict(interval=1, metric='mAP')
 
 
 find_unused_parameters = True
