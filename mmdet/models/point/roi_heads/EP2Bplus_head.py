@@ -919,9 +919,9 @@ class EP2BplusHead(StandardRoIHead):
         print("DEBUG - img_shape:", img_shapes)
         print("DEBUG - scale_factor:", scale_factors)
 
-        # if bbox_pred.shape[1] == 80:
-        #     print("DEBUG - Corrigindo bbox_pred para corresponder ao esperado")
-        #     bbox_pred = torch.cat([bbox_pred, torch.zeros((bbox_pred.shape[0], 4), device=bbox_pred.device)], dim=1)
+        if bbox_pred.shape[1] == 80:
+            print("DEBUG - Corrigindo bbox_pred para corresponder ao esperado")
+            bbox_pred = torch.cat([bbox_pred, torch.zeros((bbox_pred.shape[0], 4), device=bbox_pred.device)], dim=1)
 
         # # [FILIPE UPDATE]
         # min_size = min(rois.shape[0], bbox_pred.shape[0])
@@ -930,12 +930,21 @@ class EP2BplusHead(StandardRoIHead):
             print("DEBUG - Removendo dimensão extra de rois")
             rois = rois.squeeze(0)
 
+         #Se scale_factor estiver em uma tupla ou for um array, converte para tensor
+        if isinstance(scale_factor, tuple) and len(scale_factor) == 1:
+            scale_factor = scale_factor[0]  # Remove a tupla extra
+
+        if isinstance(scale_factor, np.ndarray) or isinstance(scale_factor, list):
+            scale_factor = torch.tensor(scale_factor, device=bbox_pred.device)
+
+        print("DEBUG - scale_factor corrigido:", scale_factor)
+
          #Corrige max_shape antes de chamar decode()
         if isinstance(img_shapes, tuple) and len(img_shapes) == 1:
             img_shapes = img_shapes[0]  # Remove a tupla extra
 
-        # if len(img_shapes) == 3:  # Se houver 3 valores, descarta o canal da imagem
-        #     img_shapes = img_shapes[:2]
+        if len(img_shapes) == 3:  # Se houver 3 valores, descarta o canal da imagem
+            img_shapes = img_shapes[:2]
 
 
         return self.bbox_head1.get_bboxes(
