@@ -202,6 +202,8 @@ class MILLoss(nn.Module):
             # method 2
             prob = prob.clamp(0, 1)
             # modified by fei ##############################################################3
+            print("DEBUG - prob min/max:", prob.min().item(), prob.max().item())
+            print("DEBUG - labels unique:", labels.unique())
             loss = F.binary_cross_entropy(prob, labels.float(), None, reduction="none")
         else:
             raise ValueError()
