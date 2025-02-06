@@ -929,7 +929,7 @@ class EP2BplusHead(StandardRoIHead):
         if rois.dim() == 3 and rois.shape[0] == 1:
             print("DEBUG - Removendo dimensão extra de rois")
             rois = rois.squeeze(0)
-
+        import numpy as np
          #Se scale_factor estiver em uma tupla ou for um array, converte para tensor
         if isinstance(scale_factors, tuple) and len(scale_factors) == 1:
             scale_factors = scale_factors[0]  # Remove a tupla extra
