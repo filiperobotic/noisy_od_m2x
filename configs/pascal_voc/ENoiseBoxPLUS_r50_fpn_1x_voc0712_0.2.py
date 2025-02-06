@@ -297,7 +297,7 @@ data = dict(
 #         ann_file=data_root + 'VOC2007/ImageSets/Main/test.txt',
 #         img_prefix=data_root + 'VOC2007/',
 #         pipeline=test_pipeline))
-evaluation = dict(interval=1, metric='mAP')
+
 
 
 
@@ -316,7 +316,9 @@ lr_config = dict(
 # Runner type
 # runner = dict(type='IterBasedRunner', max_iters=18000)
 #runner = dict(type='EpochBasedRunner', max_epochs=12)
-runner = dict(type='EpochBasedRunner', max_epochs=1)
+runner = dict(type='EpochBasedRunner', max_epochs=2)
+
+evaluation = dict(interval=1, metric='mAP')
 
 # checkpoint_config = dict(interval=3000)
 # evaluation = dict(interval=3000, metric='mAP')
