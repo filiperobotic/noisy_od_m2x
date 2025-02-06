@@ -870,7 +870,7 @@ class EP2BplusHead(StandardRoIHead):
 
         # bbox_pred would be None in some detector when with_reg is False,
         # e.g. Grid R-CNN.
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         if bbox_pred is not None:
             # the bbox prediction of some detectors like SABL is not Tensor
             if isinstance(bbox_pred, torch.Tensor):
@@ -906,7 +906,7 @@ class EP2BplusHead(StandardRoIHead):
                 return det_bboxes, det_labels
         else:
             bbox_pred = None
-
+        import pdb; pdb.set_trace()
         return self.bbox_head1.get_bboxes(
             rois,
             cls_score,

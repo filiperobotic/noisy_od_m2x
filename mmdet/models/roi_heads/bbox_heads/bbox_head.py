@@ -372,6 +372,7 @@ class BBoxHead(BaseModule):
         if cfg is None:
             return bboxes, scores
         else:
+            import pdb; pdb.set_trace()
             det_bboxes, det_labels = multiclass_nms(bboxes, scores,
                                                     cfg.score_thr, cfg.nms,
                                                     cfg.max_per_img)
