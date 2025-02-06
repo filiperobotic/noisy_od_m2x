@@ -36,7 +36,9 @@ class EP2BplusHead(StandardRoIHead):
 
         self.featmap_stride = bbox_roi_extractor.featmap_strides
         self.with_atten = with_atten
+        # import pdb; pdb.set_trace()
         if bbox_head1 is not None:
+            # bbox_head1['train_cfg'] = self.train_cfg.get('rcnn', {})  # Adicionando train_cfg ao dict [FILIPE]
             self.bbox_head1 = build_head(bbox_head1)
         # self.Test_P2B_iou = Test_P2B_iou()
         # self.Test_P2B_iou_3 = Test_P2B_iou_3()
@@ -412,9 +414,10 @@ class EP2BplusHead(StandardRoIHead):
         """Run forward function and calculate loss for box head in training."""
         rois = bbox2roi([res.bboxes for res in sampling_results])
         bbox_results = self._bbox_forward1(x, rois, )
-
+        # import pdb;pdb.set_trace()
         bbox_targets = self.bbox_head1.get_targets(sampling_results, gt_bboxes,
-                                                   gt_labels, ann_weight, self.train_cfg)  ## add by fei
+                                                #    gt_labels, ann_weight, self.train_cfg)  ## add by fei
+                                                gt_labels, self.train_cfg)  ##  [FILIPE][Removi ann_weight]
         loss_bbox = self.bbox_head1.loss(bbox_results['cls_score'],
                                          bbox_results['bbox_pred'], rois,
                                          *bbox_targets)
@@ -903,6 +906,46 @@ class EP2BplusHead(StandardRoIHead):
                 return det_bboxes, det_labels
         else:
             bbox_pred = None
+        import pdb; pdb.set_trace()
+        #[FILIPE UPDATE]
+        #Ajustando bboxes e scores antes de serem enviados para bbox_head
+        cls_score = cls_score.squeeze(0) if cls_score.dim() == 3 else cls_score
+        bbox_pred = bbox_pred.squeeze(0) if bbox_pred.dim() == 3 else bbox_pred
+
+
+        print("DEBUG - rois.shape:", rois.shape)
+        print("DEBUG - cls_score.shape:", cls_score.shape)
+        print("DEBUG - bbox_pred.shape:", bbox_pred.shape)
+        print("DEBUG - img_shape:", img_shapes)
+        print("DEBUG - scale_factor:", scale_factors)
+
+        if bbox_pred.shape[1] == 80:
+            print("DEBUG - Corrigindo bbox_pred para corresponder ao esperado")
+            bbox_pred = torch.cat([bbox_pred, torch.zeros((bbox_pred.shape[0], 4), device=bbox_pred.device)], dim=1)
+
+        # # [FILIPE UPDATE]
+        # min_size = min(rois.shape[0], bbox_pred.shape[0])
+        # Se rois tem um shape de [1, 1000, 5], remover a dimensão extra
+        if rois.dim() == 3 and rois.shape[0] == 1:
+            print("DEBUG - Removendo dimensão extra de rois")
+            rois = rois.squeeze(0)
+        import numpy as np
+         #Se scale_factor estiver em uma tupla ou for um array, converte para tensor
+        if isinstance(scale_factors, tuple) and len(scale_factors) == 1:
+            scale_factors = scale_factors[0]  # Remove a tupla extra
+
+        if isinstance(scale_factors, np.ndarray) or isinstance(scale_factors, list):
+            scale_factors = torch.tensor(scale_factors, device=bbox_pred.device)
+
+        print("DEBUG - scale_factor corrigido:", scale_factors)
+
+         #Corrige max_shape antes de chamar decode()
+        if isinstance(img_shapes, tuple) and len(img_shapes) == 1:
+            img_shapes = img_shapes[0]  # Remove a tupla extra
+
+        if len(img_shapes) == 3:  # Se houver 3 valores, descarta o canal da imagem
+            img_shapes = img_shapes[:2]
+
 
         return self.bbox_head1.get_bboxes(
             rois,
