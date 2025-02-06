@@ -870,6 +870,7 @@ class EP2BplusHead(StandardRoIHead):
 
         # bbox_pred would be None in some detector when with_reg is False,
         # e.g. Grid R-CNN.
+        import pdb; pdb.set_trace()
         if bbox_pred is not None:
             # the bbox prediction of some detectors like SABL is not Tensor
             if isinstance(bbox_pred, torch.Tensor):
@@ -886,6 +887,7 @@ class EP2BplusHead(StandardRoIHead):
                 # apply bbox post-processing to each image individually
                 det_bboxes = []
                 det_labels = []
+                
                 for i in range(len(proposals)):
                     # remove padding
                     supplement_mask = proposals[i].abs().sum(dim=-1) == 0
