@@ -205,6 +205,9 @@ class MILLoss(nn.Module):
             # print("DEBUG - prob min/max:", prob.min().item(), prob.max().item())
             # print("DEBUG - labels unique:", labels.unique())
             # prob = torch.clamp(prob, min=0.0, max=1.0) #[FILIPE-adicionado]
+            if (prob < 0.0) or (prob > 1.0):
+                import pdb; pdb.set_trace()
+                print("DEBUG - prob min/max:", prob.min().item(), prob.max().item())
             loss = F.binary_cross_entropy(prob, labels.float(), None, reduction="none")
         else:
             raise ValueError()
