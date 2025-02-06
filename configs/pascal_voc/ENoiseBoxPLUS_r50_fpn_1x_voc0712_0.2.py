@@ -298,7 +298,7 @@ data = dict(
 #         img_prefix=data_root + 'VOC2007/',
 #         pipeline=test_pipeline))
 
-evaluation = dict(interval=3, metric='mAP')
+evaluation = dict(interval=1, metric='mAP')
 
 check = dict(stop_while_nan=False)  # add by hui
 
