@@ -913,6 +913,13 @@ class EP2BplusHead(StandardRoIHead):
         bbox_pred = bbox_pred.squeeze(0) if bbox_pred.dim() == 3 else bbox_pred
 
 
+        print("DEBUG - rois.shape:", rois.shape)
+        print("DEBUG - cls_score.shape:", cls_score.shape)
+        print("DEBUG - bbox_pred.shape:", bbox_pred.shape)
+        print("DEBUG - img_shape:", img_shapes)
+        print("DEBUG - scale_factor:", scale_factors)
+
+
         return self.bbox_head1.get_bboxes(
             rois,
             cls_score,
