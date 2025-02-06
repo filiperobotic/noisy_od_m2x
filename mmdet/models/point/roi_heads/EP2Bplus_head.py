@@ -919,12 +919,12 @@ class EP2BplusHead(StandardRoIHead):
         print("DEBUG - img_shape:", img_shapes)
         print("DEBUG - scale_factor:", scale_factors)
 
-        if bbox_pred.shape[1] == 80:
-            print("DEBUG - Corrigindo bbox_pred para corresponder ao esperado")
-            bbox_pred = torch.cat([bbox_pred, torch.zeros((bbox_pred.shape[0], 4), device=bbox_pred.device)], dim=1)
+        # if bbox_pred.shape[1] == 80:
+        #     print("DEBUG - Corrigindo bbox_pred para corresponder ao esperado")
+        #     bbox_pred = torch.cat([bbox_pred, torch.zeros((bbox_pred.shape[0], 4), device=bbox_pred.device)], dim=1)
 
-        # [FILIPE UPDATE]
-        min_size = min(rois.shape[0], bbox_pred.shape[0])
+        # # [FILIPE UPDATE]
+        # min_size = min(rois.shape[0], bbox_pred.shape[0])
         # Se rois tem um shape de [1, 1000, 5], remover a dimensão extra
         if rois.dim() == 3 and rois.shape[0] == 1:
             print("DEBUG - Removendo dimensão extra de rois")
