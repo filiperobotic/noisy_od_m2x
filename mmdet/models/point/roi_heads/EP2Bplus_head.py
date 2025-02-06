@@ -925,8 +925,10 @@ class EP2BplusHead(StandardRoIHead):
 
         # [FILIPE UPDATE]
         min_size = min(rois.shape[0], bbox_pred.shape[0])
-        rois = rois[:min_size]
-        bbox_pred = bbox_pred[:min_size]
+        # Se rois tem um shape de [1, 1000, 5], remover a dimensão extra
+        if rois.dim() == 3 and rois.shape[0] == 1:
+            print("DEBUG - Removendo dimensão extra de rois")
+            rois = rois.squeeze(0)
 
 
         return self.bbox_head1.get_bboxes(
