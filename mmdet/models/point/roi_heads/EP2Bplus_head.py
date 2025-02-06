@@ -906,7 +906,7 @@ class EP2BplusHead(StandardRoIHead):
                 return det_bboxes, det_labels
         else:
             bbox_pred = None
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         return self.bbox_head1.get_bboxes(
             rois,
             cls_score,
