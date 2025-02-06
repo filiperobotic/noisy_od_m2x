@@ -106,7 +106,7 @@ def gen_negative_proposals(gt_points, proposal_cfg, aug_generate_proposals, img_
         y1 = -0.2 * h + torch.rand(num_neg_gen) * (1.2 * h)
         x2 = x1 + torch.rand(num_neg_gen) * (1.2 * w - x1)
         y2 = y1 + torch.rand(num_neg_gen) * (1.2 * h - y1)
-        print(f"[DEBUG] neg_box: {x1}, {y1}, {x2}, {y2}, {gt_points[0]}")
+        # print(f"[DEBUG] neg_box: {x1}, {y1}, {x2}, {y2}, {gt_points[0]}")
         neg_bboxes = torch.stack([x1, y1, x2, y2], dim=1).to(gt_points[0].device)
         iou = bbox_overlaps(neg_bboxes, pos_box)
         neg_weight = ((iou < iou_thr).sum(dim=1) == iou.shape[1])
