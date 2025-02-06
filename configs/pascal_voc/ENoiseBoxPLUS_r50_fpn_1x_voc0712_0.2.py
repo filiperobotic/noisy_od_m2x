@@ -250,8 +250,8 @@ data = dict(
     train=dict(
         type=dataset_type,
         ann_file=[
-            #data_root + 'VOC2007/ImageSets/Main/trainval.txt',
-            data_root + 'VOC2007/ImageSets/Main/trainval_debug_nano.txt',
+            data_root + 'VOC2007/ImageSets/Main/trainval.txt',
+            # data_root + 'VOC2007/ImageSets/Main/trainval_debug_nano.txt',
             # data_root + 'VOC2012/ImageSets/Main/trainval.txt'
         ],
         #img_prefix=[data_root + 'VOC2007/', data_root + 'VOC2012/'],
@@ -312,7 +312,8 @@ lr_config = dict(
     warmup_iters=500,
     warmup_ratio=0.001,
     step=[8, 11])
-runner = dict(type='EpochBasedRunner', max_epochs=12)
+# runner = dict(type='EpochBasedRunner', max_epochs=12)
+runner = dict(type='EpochBasedRunner', max_epochs=1)
 
 # checkpoint_config = dict(interval=3000)
 # evaluation = dict(interval=3000, metric='mAP')
