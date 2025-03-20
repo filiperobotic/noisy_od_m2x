@@ -3,6 +3,13 @@ _base_ = [
       '../_base_/datasets/voc0712_debug.py',
     '../_base_/default_runtime.py'
 ]
+
+
+custom_imports = dict(
+    imports=['mmdet.models.point.detectors.ENoiseBox'],  # Caminho correto para o módulo
+    allow_failed_imports=False
+)
+
 # model = dict(roi_head=dict(bbox_head=dict(num_classes=20)))
 # model settings
 debug = False
