@@ -32,11 +32,15 @@ def single_gpu_test(model,
     print(f"[COUNTER]={counter}")
     import pdb;pdb.set_trace()
 
-
+    counter = 0
     for i, data in enumerate(data_loader):
         with torch.no_grad():
+            print(f"counter = {counter}/{i}")
+            counter+=1
             if i>246:
+            
                 import pdb;pdb.set_trace()
+
             result = model(return_loss=False, rescale=True, **data)
 
         batch_size = len(result)
