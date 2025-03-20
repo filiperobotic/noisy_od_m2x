@@ -248,11 +248,12 @@ train_pipeline = [
 test_pipeline = [
     # dict(type='LoadImageFromFile', backend_args=backend_args),
     dict(type='LoadImageFromFile'),
+   
     #dict(type='Resize', scale=(1000, 600), keep_ratio=True),
     #dict(type='Resize', scale=(1333, 800), keep_ratio=True),
     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
     # avoid bboxes being resized
-    dict(type='LoadAnnotations', with_bbox=True),
+     dict(type='LoadAnnotations', with_bbox=True),
     # dict(
     #     type='PackDetInputs',
     #     meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
