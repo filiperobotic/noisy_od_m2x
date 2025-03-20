@@ -211,25 +211,55 @@ dataset_type = 'VOCDataset'
 data_root = 'data/VOCdevkit/'
 img_norm_cfg = dict(
     mean=[103.530, 116.280, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
+# train_pipeline = [
+#     dict(type='LoadImageFromFile'),
+#     #dict(type='LoadAnnotations', with_bbox=True),
+#     dict(type='LoadAnnotations', with_bbox=True, with_label=True),
+#     # dict(type='LoadAnnotations', with_bbox=True, with_true_bboxes=True),
+#     dict(
+#         type='Resize',
+#         img_scale=[(1333, 480), (1333, 512), (1333, 544), (1333, 576),
+#                    (1333, 608), (1333, 640), (1333, 672), (1333, 704),
+#                    (1333, 736), (1333, 768), (1333, 800)],
+#         multiscale_mode='value',
+#         keep_ratio=True),
+#     dict(type='RandomFlip', flip_ratio=0.5),
+#     dict(type='Normalize', **img_norm_cfg),
+#     dict(type='Pad', size_divisor=32),
+#     dict(type='DefaultFormatBundle'),
+#     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
+#     # dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_bboxes_ignore', 'gt_true_bboxes']),
+# ]
+
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    #dict(type='LoadAnnotations', with_bbox=True),
-    dict(type='LoadAnnotations', with_bbox=True, with_label=True),
-    # dict(type='LoadAnnotations', with_bbox=True, with_true_bboxes=True),
-    dict(
-        type='Resize',
-        img_scale=[(1333, 480), (1333, 512), (1333, 544), (1333, 576),
-                   (1333, 608), (1333, 640), (1333, 672), (1333, 704),
-                   (1333, 736), (1333, 768), (1333, 800)],
-        multiscale_mode='value',
-        keep_ratio=True),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(type='Resize', img_scale=(1000, 600), keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
-    # dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_bboxes_ignore', 'gt_true_bboxes']),
 ]
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(1000, 600),
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='Pad', size_divisor=32),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ])
+]
+
+
+
+
 # test_pipeline = [
 #     dict(type='LoadImageFromFile'),
 #     dict(
@@ -246,15 +276,15 @@ train_pipeline = [
 #         ])
 # ]
 
-test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),  # Redimensiona sem MultiScale
-    dict(type='RandomFlip', flip_ratio=0.0),  # Adiciona a chave 'flip' sem ativar flips
-    dict(type='Normalize', **img_norm_cfg),  # Normaliza a imagem
-    dict(type='Pad', size_divisor=32),  # Faz padding para múltiplos de 32
-    dict(type='ImageToTensor', keys=['img']),  # Converte para tensor
-    dict(type='Collect', keys=['img']),  # Coleta apenas a imagem para o modelo
-]
+# test_pipeline = [
+#     dict(type='LoadImageFromFile'),
+#     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),  # Redimensiona sem MultiScale
+#     dict(type='RandomFlip', flip_ratio=0.0),  # Adiciona a chave 'flip' sem ativar flips
+#     dict(type='Normalize', **img_norm_cfg),  # Normaliza a imagem
+#     dict(type='Pad', size_divisor=32),  # Faz padding para múltiplos de 32
+#     dict(type='ImageToTensor', keys=['img']),  # Converte para tensor
+#     dict(type='Collect', keys=['img']),  # Coleta apenas a imagem para o modelo
+# ]
 
 # test_pipeline = [
 #     # dict(type='LoadImageFromFile', backend_args=backend_args),
