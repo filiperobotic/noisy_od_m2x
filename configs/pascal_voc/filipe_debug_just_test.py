@@ -16,8 +16,8 @@ debug = False
 norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)  # add
 det_loss_weight = 4.0
 stage_modes=['CBP', 'PBR']
-#num_stages = 2
-num_stages = 1
+num_stages = 2
+# num_stages = 1
 model = dict(
     type='ENoiseBox',
     pretrained='torchvision://resnet50',
