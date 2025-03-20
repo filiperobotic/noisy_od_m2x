@@ -249,7 +249,7 @@ train_pipeline = [
 test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),  # Redimensiona sem MultiScale
-    dict(type='RandomFlip', flip_ratio=0),  # Adiciona a chave 'flip' sem ativar flips
+    dict(type='RandomFlip', flip_ratio=0.0),  # Adiciona a chave 'flip' sem ativar flips
     dict(type='Normalize', **img_norm_cfg),  # Normaliza a imagem
     dict(type='Pad', size_divisor=32),  # Faz padding para múltiplos de 32
     dict(type='ImageToTensor', keys=['img']),  # Converte para tensor
