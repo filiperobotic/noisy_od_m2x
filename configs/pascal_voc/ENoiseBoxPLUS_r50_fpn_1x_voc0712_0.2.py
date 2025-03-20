@@ -209,8 +209,10 @@ model = dict(
 # dataset settings
 dataset_type = 'VOCDataset'
 data_root = 'data/VOCdevkit/'
+# img_norm_cfg = dict(
+#     mean=[103.530, 116.280, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
 img_norm_cfg = dict(
-    mean=[103.530, 116.280, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
+    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 # train_pipeline = [
 #     dict(type='LoadImageFromFile'),
 #     #dict(type='LoadAnnotations', with_bbox=True),
@@ -395,7 +397,8 @@ optimizer_config = dict(grad_clip=dict(max_norm=10, norm_type=2))
 lr_config = dict(
     policy='step',
     warmup='linear',
-    warmup_iters=500,
+    # warmup_iters=500,
+    warmup_iters=1,
     warmup_ratio=0.001,
     step=[8, 11])
 # runner = dict(type='EpochBasedRunner', max_epochs=12)
