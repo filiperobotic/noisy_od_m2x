@@ -252,6 +252,7 @@ class LoadAnnotations:
             dict: The dict contains loaded bounding box annotations.
         """
         
+        print("DEBUG: Keys disponíveis em results:", results.keys()) 
         ann_info = results['ann_info']
         results['gt_bboxes'] = ann_info['bboxes'].copy()
 
