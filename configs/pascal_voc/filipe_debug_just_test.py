@@ -5,6 +5,7 @@ _base_ = [
 ]
 # model = dict(roi_head=dict(bbox_head=dict(num_classes=20)))
 # model settings
+norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)  # add
 det_loss_weight = 4.0
 stage_modes=['CBP', 'PBR']
 num_stages = 2
