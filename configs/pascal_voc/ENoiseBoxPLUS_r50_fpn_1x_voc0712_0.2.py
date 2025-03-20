@@ -255,7 +255,8 @@ test_pipeline = [
     # avoid bboxes being resized
     dict(type='LoadAnnotations', with_bbox=True),
     dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img']),
+    # dict(type='Collect', keys=['img']),
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
     # dict(
     #     type='PackDetInputs',
     #     meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
