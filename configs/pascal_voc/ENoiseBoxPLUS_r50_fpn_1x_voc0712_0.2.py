@@ -253,11 +253,13 @@ test_pipeline = [
     #dict(type='Resize', scale=(1333, 800), keep_ratio=True),
     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
     # avoid bboxes being resized
-     dict(type='LoadAnnotations', with_bbox=True),
-    dict(
-        type='PackDetInputs',
-        meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
-                   'scale_factor'))
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(type='DefaultFormatBundle'),
+    dict(type='Collect', keys=['img']),
+    # dict(
+    #     type='PackDetInputs',
+    #     meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
+    #                'scale_factor'))
 ]
 
 
