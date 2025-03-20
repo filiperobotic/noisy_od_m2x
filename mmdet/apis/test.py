@@ -25,6 +25,14 @@ def single_gpu_test(model,
     PALETTE = getattr(dataset, 'PALETTE', None)
     # import pdb; pdb.set_trace()
     prog_bar = mmcv.ProgressBar(len(dataset))
+    print("[BEGINING...}")
+    counter = 0
+    for i, data in enumerate(data_loader):
+        counter += 1
+    print(f"[COUNTER]={counter}")
+    import pdb;pdb.set_trace()
+
+
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             if i>246:
