@@ -230,39 +230,39 @@ train_pipeline = [
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
     # dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_bboxes_ignore', 'gt_true_bboxes']),
 ]
-# test_pipeline = [
-#     dict(type='LoadImageFromFile'),
-#     dict(
-#         type='MultiScaleFlipAug',
-#         img_scale=(1333, 800),
-#         flip=False,
-#         transforms=[
-#             dict(type='Resize', keep_ratio=True),
-#             dict(type='RandomFlip'),
-#             dict(type='Normalize', **img_norm_cfg),
-#             dict(type='Pad', size_divisor=32),
-#             dict(type='ImageToTensor', keys=['img']),
-#             dict(type='Collect', keys=['img']),
-#         ])
-# ]
-
 test_pipeline = [
-    # dict(type='LoadImageFromFile', backend_args=backend_args),
     dict(type='LoadImageFromFile'),
-   
-    #dict(type='Resize', scale=(1000, 600), keep_ratio=True),
-    #dict(type='Resize', scale=(1333, 800), keep_ratio=True),
-    dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-    # avoid bboxes being resized
-    dict(type='LoadAnnotations', with_bbox=True, with_label=True),
-    dict(type='DefaultFormatBundle'),
-    # dict(type='Collect', keys=['img']),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
-    # dict(
-    #     type='PackDetInputs',
-    #     meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
-    #                'scale_factor'))
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(1333, 800),
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='Pad', size_divisor=32),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ])
 ]
+
+# test_pipeline = [
+#     # dict(type='LoadImageFromFile', backend_args=backend_args),
+#     dict(type='LoadImageFromFile'),
+   
+#     #dict(type='Resize', scale=(1000, 600), keep_ratio=True),
+#     #dict(type='Resize', scale=(1333, 800), keep_ratio=True),
+#     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
+#     # avoid bboxes being resized
+#     dict(type='LoadAnnotations', with_bbox=True, with_label=True),
+#     dict(type='DefaultFormatBundle'),
+#     # dict(type='Collect', keys=['img']),
+#     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
+#     # dict(
+#     #     type='PackDetInputs',
+#     #     meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
+#     #                'scale_factor'))
+# ]
 
 
 data = dict(
