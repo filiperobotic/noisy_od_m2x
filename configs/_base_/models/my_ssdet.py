@@ -107,6 +107,9 @@
 #         # e.g., nms=dict(type='soft_nms', iou_threshold=0.5, min_score=0.05)
 #     ))
 
+
+norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)  # add
+debug = False
 # model settings
 det_loss_weight = 4.0
 stage_modes=['CBP', 'PBR']
