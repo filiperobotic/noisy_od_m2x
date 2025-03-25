@@ -35,7 +35,8 @@ def single_gpu_test(model,
     counter = 0
     for i, data in enumerate(data_loader):
         with torch.no_grad():
-            print(f"counter = {counter}/{i}")
+            #print(f"counter = {counter}/{i}")
+            print(f"{i}/{len(data_loader)}")
             counter+=1
             # if i>246:
             
