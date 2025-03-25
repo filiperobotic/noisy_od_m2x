@@ -108,8 +108,7 @@
 #     ))
 
 
-#norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)  # add
-norm_cfg = dict(type='GN', num_groups=2, requires_grad=True)  # add
+norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)  # add
 debug = False
 # model settings
 det_loss_weight = 4.0
@@ -170,8 +169,6 @@ model = dict(
             fc_out_channels=1024,
             roi_feat_size=7,
             num_classes=20,
-            # num_classes=21,
-            # num_classes=80,
             bbox_coder=dict(
                 type='DeltaXYWHBBoxCoder',
                 target_means=[0., 0., 0., 0.],
@@ -188,7 +185,6 @@ model = dict(
             fc_out_channels=1024,
             roi_feat_size=7,
             num_classes=20,
-            # num_classes=80,
             num_ref_fcs=0,
             with_reg=True,
             with_sem=False,
@@ -244,8 +240,8 @@ model = dict(
             # shake_ratio=([0.2], None),
             # # base_ratios_shake=[1.0, 1/1.5, 0.5, 1.5,2.0],
             # base_ratios=([1.0, 0.5, 0.7, 1.5, 2.0], [1.0, 0.7, 0.8, 1.2, 1.5]),
-            shake_ratio=([0.1]),
-            base_ratios=([1, 1.1,  0.9]),
+            shake_ratio=[0.2],
+            base_ratios=[1, 1.2, 1.3, 0.8, 0.7],
             gen_num_per_box=10,
             iou_thr=0.3,
             gen_num_neg=500,
