@@ -79,6 +79,8 @@ def single_gpu_test(model,
                     score_thr=show_score_thr)
 
         # encode mask results
+        if len(result[0]) == 0:
+            import pdb; pdb.set_trace()
         if isinstance(result[0], tuple):
             result = [(bbox_results, encode_mask_results(mask_results))
                       for bbox_results, mask_results in result]
