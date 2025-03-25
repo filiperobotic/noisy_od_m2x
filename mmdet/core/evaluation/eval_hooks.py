@@ -58,8 +58,8 @@ class EvalHook(BaseEvalHook):
         # Changed results to self.results so that MMDetWandbHook can access
         # the evaluation results and log them to wandb.
         import pdb; pdb.set_trace()
-        for i in self.dataloader:
-            print(i)
+        for i, x in enumerate(self.dataloader):
+            print(f"{i}/{len(self.dataloader)}")
         import pdb; pdb.set_trace()
         results = single_gpu_test(runner.model, self.dataloader, show=False)
         self.latest_results = results
