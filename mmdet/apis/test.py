@@ -38,7 +38,9 @@ def single_gpu_test(model,
             #print(f"counter = {counter}/{i}")
             print(f"{i}/{len(data_loader)}")
             counter+=1
-            # if i>246:
+            if i == 99:
+                import pdb;pdb.set_trace()
+                # print(f"[DATA]={data}")
             
             #     import pdb;pdb.set_trace()
 
