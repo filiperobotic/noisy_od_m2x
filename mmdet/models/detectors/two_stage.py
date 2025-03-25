@@ -172,7 +172,7 @@ class TwoStageDetector(BaseDetector):
 
     def simple_test(self, img, img_metas, proposals=None, rescale=False):
         """Test without augmentation."""
-
+        import pdb; pdb.set_trace()
         assert self.with_bbox, 'Bbox head must be implemented.'
         x = self.extract_feat(img)
         if proposals is None:
