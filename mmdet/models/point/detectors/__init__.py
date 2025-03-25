@@ -4,6 +4,7 @@
 # from .EP2BNet import EP2BNet
 from .ENoiseBox import ENoiseBox
 from .ENoiseBox_retrain import ENoiseBoxRetrain
+from . import detectors
 
 # from .P2Seg import P2Seg
 
