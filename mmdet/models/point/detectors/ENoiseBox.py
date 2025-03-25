@@ -215,35 +215,4 @@ class ENoiseBox(TwoStageDetector):
     #         ####################################################
 
 
-    def simple_test(self, img, img_metas, gt_bboxes, gt_anns_id, gt_true_bboxes, gt_labels,
-                    gt_bboxes_ignore=None, proposals=None, rescale=False):
-        """Test without augmentation."""
-        base_proposal_cfg = self.train_cfg.get('base_proposal',
-                                               self.test_cfg.rpn)
-        fine_proposal_cfg = self.train_cfg.get('fine_proposal',
-                                               self.test_cfg.rpn)
-        assert self.with_bbox, 'Bbox head must be implemented.'
-        x = self.extract_feat(img)
-        for stage in range(self.num_stages):
-
-            # gt_points = [bbox_xyxy_to_cxcywh(b)[:, :2] for b in gt_bboxes]
-            # if stage == 0:
-            #     generate_proposals, proposals_valid_list = CBP_proposals_from_cfg(gt_points, base_proposal_cfg,
-            #                                                                       img_meta=img_metas)
-            # else:
-            if stage == 0:
-                others = None
-                # cascade_weight = torch.cat(gt_labels).new_ones(len(torch.cat(gt_labels)))
-                generate_proposals, proposals_valid_list = PBR_proposals_from_cfg(gt_bboxes, fine_proposal_cfg,
-                                                                                  img_meta=img_metas, stage=stage)
-            elif stage == 1:
-                generate_proposals, proposals_valid_list = PBR_proposals_from_cfg(pseudo_boxes, fine_proposal_cfg,
-                                                                                  img_meta=img_metas, stage=stage)
-
-            test_result, pseudo_boxes = self.roi_head.simple_test_pseudo(stage,
-                                                                         x, generate_proposals, proposals_valid_list,
-                                                                         gt_true_bboxes, gt_labels,
-                                                                         gt_anns_id,
-                                                                         img_metas,
-                                                                         rescale=rescale)
-        return test_result
+    
