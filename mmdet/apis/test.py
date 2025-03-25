@@ -38,13 +38,14 @@ def single_gpu_test(model,
             #print(f"counter = {counter}/{i}")
             print(f"{i}/{len(data_loader)}")
             counter+=1
-            if i == 99:
-                import pdb;pdb.set_trace()
+            # if i == 99:
+            #     import pdb;pdb.set_trace()
                 # print(f"[DATA]={data}")
             
             #     import pdb;pdb.set_trace()
 
             result = model(return_loss=False, rescale=True, **data)
+            import pdb;pdb.set_trace()
 
         batch_size = len(result)
         if show or out_dir:
