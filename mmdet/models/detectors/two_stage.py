@@ -180,7 +180,7 @@ class TwoStageDetector(BaseDetector):
             proposal_list = self.rpn_head.simple_test_rpn(x, img_metas)
         else:
             proposal_list = proposals
-        # import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         print(len(self.roi_head.simple_test(x, proposal_list, img_metas, rescale=rescale)))
         return self.roi_head.simple_test(
             x, proposal_list, img_metas, rescale=rescale)
