@@ -908,14 +908,28 @@ class EP2BplusHead(StandardRoIHead):
         else:
             bbox_pred = None
         import pdb; pdb.set_trace()
-        return self.bbox_head1.get_bboxes(
-            rois,
-            cls_score,
-            bbox_pred,
-            img_shapes,
-            scale_factors,
-            rescale=rescale,
-            cfg=rcnn_test_cfg)
+        # return self.bbox_head1.get_bboxes(
+        #     rois,
+        #     cls_score,
+        #     bbox_pred,
+        #     img_shapes,
+        #     scale_factors,
+        #     rescale=rescale,
+        #     cfg=rcnn_test_cfg)
+
+        #FILIPE-GPT CODE
+        det_bboxes, det_labels = self.bbox_head1.get_bboxes(
+        rois,
+        cls_score,
+        bbox_pred,
+        img_shapes,
+        scale_factors,
+        rescale=rescale,
+        cfg=rcnn_test_cfg)
+
+        # Organiza o retorno para formato [img1, img2, ..., imgN]
+        return [det_bboxes[i] for i in range(len(img_metas))], [det_labels[i] for i in range(len(img_metas))]
+        #FIM FILIPE-GPT CODE
 
 
 class Test_P2B_iou(nn.Module):
