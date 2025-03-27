@@ -64,6 +64,7 @@ class EvalHook(BaseEvalHook):
         results = single_gpu_test(runner.model, self.dataloader, show=False)
         self.latest_results = results
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
+        import pdb; pdb.set_trace()
         key_score = self.evaluate(runner, results)
         # the key_score may be `None` so it needs to skip the action to save
         # the best checkpoint
