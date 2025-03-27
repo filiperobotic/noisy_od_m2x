@@ -698,7 +698,7 @@ class EP2BplusHead(StandardRoIHead):
                                    self.bbox_head.num_classes)
 
         # det_bboxes always keep the original scale
-        import pdb; pdb.set_trace()
+        
         if self.with_mask:
             segm_results = self.test_mask(x, img_metas, det_bboxes,
                                           det_labels)
@@ -907,7 +907,7 @@ class EP2BplusHead(StandardRoIHead):
                 return det_bboxes, det_labels
         else:
             bbox_pred = None
-        # import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         return self.bbox_head1.get_bboxes(
             rois,
             cls_score,
