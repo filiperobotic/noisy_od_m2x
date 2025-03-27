@@ -373,7 +373,7 @@ class BBoxHead(BaseModule):
         if cfg is None:
             return bboxes, scores
         else:
-            import pdb; pdb.set_trace()
+            # import pdb; pdb.set_trace()
             # det_bboxes, det_labels = multiclass_nms(bboxes, scores,
             det_bboxes, det_labels = multiclass_nms(bboxes, scores.squeeze(),  #[FILIPE] squeeze scores
                                                     cfg.score_thr, cfg.nms,

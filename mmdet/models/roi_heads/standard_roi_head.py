@@ -250,7 +250,7 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
         """
         assert self.with_bbox, 'Bbox head must be implemented.'
 
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
         det_bboxes, det_labels = self.simple_test_bboxes(
             x, img_metas, proposal_list, self.test_cfg, rescale=rescale)
@@ -260,7 +260,7 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
                         self.bbox_head.num_classes)
             for i in range(len(det_bboxes))
         ]
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         if not self.with_mask:
             return bbox_results
         else:

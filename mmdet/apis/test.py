@@ -42,7 +42,7 @@ def single_gpu_test(model,
             #     import pdb;pdb.set_trace()
                 # print(f"[DATA]={data}")
             
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
 
             result = model(return_loss=False, rescale=True, **data)
             # import pdb;pdb.set_trace()

@@ -1017,7 +1017,7 @@ class EP2BplusHead(StandardRoIHead):
                     cfg=rcnn_test_cfg)
             det_bboxes.append(det_bbox)
             det_labels.append(det_label)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         return det_bboxes, det_labels
 
 
