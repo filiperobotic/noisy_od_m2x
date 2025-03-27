@@ -698,6 +698,7 @@ class EP2BplusHead(StandardRoIHead):
                                    self.bbox_head.num_classes)
 
         # det_bboxes always keep the original scale
+        import pdb; pdb.set_trace()
         if self.with_mask:
             segm_results = self.test_mask(x, img_metas, det_bboxes,
                                           det_labels)
