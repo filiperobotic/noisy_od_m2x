@@ -926,7 +926,7 @@ class EP2BplusHead(StandardRoIHead):
         scale_factors,
         rescale=rescale,
         cfg=rcnn_test_cfg)
-
+        import pdb; pdb.set_trace()
         # Organiza o retorno para formato [img1, img2, ..., imgN]
         return [det_bboxes[i] for i in range(len(img_metas))], [det_labels[i] for i in range(len(img_metas))]
         #FIM FILIPE-GPT CODE
