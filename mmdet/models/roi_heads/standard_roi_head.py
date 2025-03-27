@@ -252,7 +252,8 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
 
         import pdb; pdb.set_trace()
 
-        det_bboxes, det_labels = self.simple_test_bboxes(
+        #det_bboxes, det_labels = self.simple_test_bboxes(
+        det_bboxes, det_labels = self.simple_test_bboxes_filipe(
             x, img_metas, proposal_list, self.test_cfg, rescale=rescale)
 
         bbox_results = [

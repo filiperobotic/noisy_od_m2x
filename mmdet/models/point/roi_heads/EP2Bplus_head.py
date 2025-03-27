@@ -808,6 +808,130 @@ class EP2BplusHead(StandardRoIHead):
 
         return det_bboxes, det_labels
 
+    # def simple_test_bboxes(self,
+    #                        x,
+    #                        img_metas,
+    #                        proposals,
+    #                        rcnn_test_cfg,
+    #                        rescale=False):
+    #     """Test only det bboxes without augmentation.
+
+    #     Args:
+    #         x (tuple[Tensor]): Feature maps of all scale level.
+    #         img_metas (list[dict]): Image meta info.
+    #         proposals (List[Tensor]): Region proposals.
+    #         rcnn_test_cfg (obj:`ConfigDict`): `test_cfg` of R-CNN.
+    #         rescale (bool): If True, return boxes in original image space.
+    #             Default: False.
+
+    #     Returns:
+    #         tuple[list[Tensor], list[Tensor]]: The first list contains
+    #             the boxes of the corresponding image in a batch, each
+    #             tensor has the shape (num_boxes, 5) and last dimension
+    #             5 represent (tl_x, tl_y, br_x, br_y, score). Each Tensor
+    #             in the second list is the labels with shape (num_boxes, ).
+    #             The length of both lists should be equal to batch_size.
+    #     """
+    #     # get origin input shape to support onnx dynamic input shape
+
+    #     img_shapes = tuple(meta['img_shape'] for meta in img_metas)
+    #     scale_factors = tuple(meta['scale_factor'] for meta in img_metas)
+
+    #     # The length of proposals of different batches may be different.
+    #     # In order to form a batch, a padding operation is required.
+    #     max_size = max([proposal.size(0) for proposal in proposals])
+    #     # padding to form a batch
+    #     for i, proposal in enumerate(proposals):
+    #         supplement = proposal.new_full(
+    #             (max_size - proposal.size(0), proposal.size(1)), 0)
+    #         proposals[i] = torch.cat((supplement, proposal), dim=0)
+    #     rois = torch.stack(proposals, dim=0)
+
+    #     batch_index = torch.arange(
+    #         rois.size(0), device=rois.device).float().view(-1, 1, 1).expand(
+    #         rois.size(0), rois.size(1), 1)
+    #     rois = torch.cat([batch_index, rois[..., :4]], dim=-1)
+    #     batch_size = rois.shape[0]
+    #     num_proposals_per_img = rois.shape[1]
+
+    #     # Eliminate the batch dimension
+    #     rois = rois.view(-1, 5)
+    #     bbox_results = self._bbox_forward1(x, rois)
+    #     cls_score = bbox_results['cls_score']
+    #     bbox_pred = bbox_results['bbox_pred']
+
+    #     # Recover the batch dimension
+    #     rois = rois.reshape(batch_size, num_proposals_per_img, rois.size(-1))
+    #     cls_score = cls_score.reshape(batch_size, num_proposals_per_img,
+    #                                   cls_score.size(-1))
+
+    #     # remove padding, ignore batch_index when calculating mask
+    #     supplement_mask = rois.abs()[..., 1:].sum(dim=-1) == 0
+    #     cls_score[supplement_mask, :] = 0
+
+    #     # bbox_pred would be None in some detector when with_reg is False,
+    #     # e.g. Grid R-CNN.
+    #     # import pdb; pdb.set_trace()
+    #     if bbox_pred is not None:
+    #         # the bbox prediction of some detectors like SABL is not Tensor
+    #         if isinstance(bbox_pred, torch.Tensor):
+    #             bbox_pred = bbox_pred.reshape(batch_size,
+    #                                           num_proposals_per_img,
+    #                                           bbox_pred.size(-1))
+    #             bbox_pred[supplement_mask, :] = 0
+    #         else:
+    #             # TODO: Looking forward to a better way
+    #             # TODO move these special process to a corresponding head
+    #             # For SABL
+    #             bbox_preds = self.bbox_head1.bbox_pred_split(
+    #                 bbox_pred, num_proposals_per_img)
+    #             # apply bbox post-processing to each image individually
+    #             det_bboxes = []
+    #             det_labels = []
+                
+    #             for i in range(len(proposals)):
+    #                 # remove padding
+    #                 supplement_mask = proposals[i].abs().sum(dim=-1) == 0
+    #                 for bbox in bbox_preds[i]:
+    #                     bbox[supplement_mask] = 0
+    #                 det_bbox, det_label = self.bbox_head1.get_bboxes(
+    #                     rois[i],
+    #                     cls_score[i],
+    #                     bbox_preds[i],
+    #                     img_shapes[i],
+    #                     scale_factors[i],
+    #                     rescale=rescale,
+    #                     cfg=rcnn_test_cfg)
+    #                 det_bboxes.append(det_bbox)
+    #                 det_labels.append(det_label)
+    #             return det_bboxes, det_labels
+    #     else:
+    #         bbox_pred = None
+    #     import pdb; pdb.set_trace()
+    #     # return self.bbox_head1.get_bboxes(
+    #     #     rois,
+    #     #     cls_score,
+    #     #     bbox_pred,
+    #     #     img_shapes,
+    #     #     scale_factors,
+    #     #     rescale=rescale,
+    #     #     cfg=rcnn_test_cfg)
+
+    #     #FILIPE-GPT CODE
+    #     det_bboxes, det_labels = self.bbox_head1.get_bboxes(
+    #     rois,
+    #     cls_score,
+    #     bbox_pred,
+    #     img_shapes,
+    #     scale_factors,
+    #     rescale=rescale,
+    #     cfg=rcnn_test_cfg)
+    #     import pdb; pdb.set_trace()
+    #     # Organiza o retorno para formato [img1, img2, ..., imgN]
+    #     return [det_bboxes[i] for i in range(len(img_metas))], [det_labels[i] for i in range(len(img_metas))]
+    #     #FIM FILIPE-GPT CODE
+
+    #filipe code
     def simple_test_bboxes(self,
                            x,
                            img_metas,
@@ -832,104 +956,69 @@ class EP2BplusHead(StandardRoIHead):
                 in the second list is the labels with shape (num_boxes, ).
                 The length of both lists should be equal to batch_size.
         """
-        # get origin input shape to support onnx dynamic input shape
 
+        rois = bbox2roi(proposals)
+
+        if rois.shape[0] == 0:
+            batch_size = len(proposals)
+            det_bbox = rois.new_zeros(0, 5)
+            det_label = rois.new_zeros((0, ), dtype=torch.long)
+            if rcnn_test_cfg is None:
+                det_bbox = det_bbox[:, :4]
+                det_label = rois.new_zeros(
+                    (0, self.bbox_head.fc_cls.out_features))
+            # There is no proposal in the whole batch
+            return [det_bbox] * batch_size, [det_label] * batch_size
+
+        bbox_results = self._bbox_forward(x, rois)
         img_shapes = tuple(meta['img_shape'] for meta in img_metas)
         scale_factors = tuple(meta['scale_factor'] for meta in img_metas)
 
-        # The length of proposals of different batches may be different.
-        # In order to form a batch, a padding operation is required.
-        max_size = max([proposal.size(0) for proposal in proposals])
-        # padding to form a batch
-        for i, proposal in enumerate(proposals):
-            supplement = proposal.new_full(
-                (max_size - proposal.size(0), proposal.size(1)), 0)
-            proposals[i] = torch.cat((supplement, proposal), dim=0)
-        rois = torch.stack(proposals, dim=0)
-
-        batch_index = torch.arange(
-            rois.size(0), device=rois.device).float().view(-1, 1, 1).expand(
-            rois.size(0), rois.size(1), 1)
-        rois = torch.cat([batch_index, rois[..., :4]], dim=-1)
-        batch_size = rois.shape[0]
-        num_proposals_per_img = rois.shape[1]
-
-        # Eliminate the batch dimension
-        rois = rois.view(-1, 5)
-        bbox_results = self._bbox_forward1(x, rois)
+        # split batch bbox prediction back to each image
         cls_score = bbox_results['cls_score']
         bbox_pred = bbox_results['bbox_pred']
+        num_proposals_per_img = tuple(len(p) for p in proposals)
+        rois = rois.split(num_proposals_per_img, 0)
+        cls_score = cls_score.split(num_proposals_per_img, 0)
 
-        # Recover the batch dimension
-        rois = rois.reshape(batch_size, num_proposals_per_img, rois.size(-1))
-        cls_score = cls_score.reshape(batch_size, num_proposals_per_img,
-                                      cls_score.size(-1))
-
-        # remove padding, ignore batch_index when calculating mask
-        supplement_mask = rois.abs()[..., 1:].sum(dim=-1) == 0
-        cls_score[supplement_mask, :] = 0
-
-        # bbox_pred would be None in some detector when with_reg is False,
-        # e.g. Grid R-CNN.
-        # import pdb; pdb.set_trace()
+        # some detector with_reg is False, bbox_pred will be None
         if bbox_pred is not None:
+            # TODO move this to a sabl_roi_head
             # the bbox prediction of some detectors like SABL is not Tensor
             if isinstance(bbox_pred, torch.Tensor):
-                bbox_pred = bbox_pred.reshape(batch_size,
-                                              num_proposals_per_img,
-                                              bbox_pred.size(-1))
-                bbox_pred[supplement_mask, :] = 0
+                bbox_pred = bbox_pred.split(num_proposals_per_img, 0)
             else:
-                # TODO: Looking forward to a better way
-                # TODO move these special process to a corresponding head
-                # For SABL
-                bbox_preds = self.bbox_head1.bbox_pred_split(
+                bbox_pred = self.bbox_head.bbox_pred_split(
                     bbox_pred, num_proposals_per_img)
-                # apply bbox post-processing to each image individually
-                det_bboxes = []
-                det_labels = []
-                
-                for i in range(len(proposals)):
-                    # remove padding
-                    supplement_mask = proposals[i].abs().sum(dim=-1) == 0
-                    for bbox in bbox_preds[i]:
-                        bbox[supplement_mask] = 0
-                    det_bbox, det_label = self.bbox_head1.get_bboxes(
-                        rois[i],
-                        cls_score[i],
-                        bbox_preds[i],
-                        img_shapes[i],
-                        scale_factors[i],
-                        rescale=rescale,
-                        cfg=rcnn_test_cfg)
-                    det_bboxes.append(det_bbox)
-                    det_labels.append(det_label)
-                return det_bboxes, det_labels
         else:
-            bbox_pred = None
-        import pdb; pdb.set_trace()
-        # return self.bbox_head1.get_bboxes(
-        #     rois,
-        #     cls_score,
-        #     bbox_pred,
-        #     img_shapes,
-        #     scale_factors,
-        #     rescale=rescale,
-        #     cfg=rcnn_test_cfg)
+            bbox_pred = (None, ) * len(proposals)
 
-        #FILIPE-GPT CODE
-        det_bboxes, det_labels = self.bbox_head1.get_bboxes(
-        rois,
-        cls_score,
-        bbox_pred,
-        img_shapes,
-        scale_factors,
-        rescale=rescale,
-        cfg=rcnn_test_cfg)
+        # apply bbox post-processing to each image individually
+        det_bboxes = []
+        det_labels = []
+        for i in range(len(proposals)):
+            if rois[i].shape[0] == 0:
+                # There is no proposal in the single image
+                det_bbox = rois[i].new_zeros(0, 5)
+                det_label = rois[i].new_zeros((0, ), dtype=torch.long)
+                if rcnn_test_cfg is None:
+                    det_bbox = det_bbox[:, :4]
+                    det_label = rois[i].new_zeros(
+                        (0, self.bbox_head.fc_cls.out_features))
+
+            else:
+                det_bbox, det_label = self.bbox_head1.get_bboxes(
+                    rois[i],
+                    cls_score[i],
+                    bbox_pred[i],
+                    img_shapes[i],
+                    scale_factors[i],
+                    rescale=rescale,
+                    cfg=rcnn_test_cfg)
+            det_bboxes.append(det_bbox)
+            det_labels.append(det_label)
         import pdb; pdb.set_trace()
-        # Organiza o retorno para formato [img1, img2, ..., imgN]
-        return [det_bboxes[i] for i in range(len(img_metas))], [det_labels[i] for i in range(len(img_metas))]
-        #FIM FILIPE-GPT CODE
+        return det_bboxes, det_labels
 
 
 class Test_P2B_iou(nn.Module):
