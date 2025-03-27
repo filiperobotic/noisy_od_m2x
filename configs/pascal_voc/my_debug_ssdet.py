@@ -2,7 +2,8 @@ _base_ = [
     '../_base_/models/my_ssdet.py',
     # '../_base_/models/my_ssdet_plus.py',
     # '../_base_/models/faster_rcnn_r50_fpn.py',
-      '../_base_/datasets/voc0712_debug.py',
+      #'../_base_/datasets/voc0712_debug.py',
+      '../_base_/datasets/voc0712.py',
     '../_base_/default_runtime.py'
 ]
 
