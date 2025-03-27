@@ -46,8 +46,8 @@ def single_gpu_test(model,
 
             result = model(return_loss=False, rescale=True, **data)
             # import pdb;pdb.set_trace()
-            if len(result) > 1:
-                import pdb; pdb.set_trace()
+            # if len(result) > 1:
+            #     import pdb; pdb.set_trace()
 
         batch_size = len(result)
         if show or out_dir:
@@ -99,8 +99,9 @@ def single_gpu_test(model,
 
             results.extend(result)
 
-        for _ in range(batch_size):
-            prog_bar.update()
+        # for _ in range(batch_size):
+        #     prog_bar.update()
+        prog_bar.update() #FILIPE
     return results
 
 
